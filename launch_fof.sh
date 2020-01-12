@@ -1,10 +1,11 @@
 # Script to launch games with lower device resolution
-# uses `pgrep, tail` from GNU coreutils, available in magisk,
-# As toolBox `tail` doesn't implement '--pid=' option
-# and `am , renice , wm` from /system/bin
-# Using Bash is recommended.
+# uses `pgrep, tail` from GNU coreutils, available in a Magisk module,
+# since toolBox's `tail` doesn't implement '--pid=' option,
+# and `am , renice , wm` from /system/bin.
+# Using Bash is recommended, but it should work with default Android mksh
+# as well so no shebang here.
 
-# script for performance mod.
+# script for performance mod, device dependent
 #. 0msm8916_performance.sh
 
 # Intent specifics for launching an application
@@ -25,12 +26,12 @@ category="android.intent.category.LAUNCHER"
 package="com.koyokiservices.FoF"
 activity="com.google.firebase.MessagingUnityPlayerActivity"
 
-# am command args for launch
+# am command args for launching the app
 cmd="start -a $action -c $category $package/$activity"
 
-# alter resolution to what works best for you
+# Alter resolution to what works best for you
 # string is res_X x resY, ie for 1280x720 size, you use 720x1280
-# sample resolutions
+# sample resolutions :
 # 320x640
 # 384x512
 # 420x800
@@ -41,17 +42,17 @@ cmd="start -a $action -c $category $package/$activity"
 # 600x800
 # 720x1280 etc.
 
-# first alter the device resolution
+# First alter the device resolution
 
 wm size 480x854
 
 # Then launch the app, call `am` with proper args
 am $cmd
 
-# wait while game loads
+# Wait while game loads
 sleep 1 && echo "sleeping for a second done!"
 
-# get pid of launched FoF process
+# Get pid of launched FoF process
 
 #method 1: ps|grep comboo
 
@@ -68,10 +69,10 @@ pid=$(pgrep $package)
 
 echo "pid=$pid"
 
-# set process id to max cpu priority
-renice 0 "$pid"
+# Set process id to max cpu priority, maybe keep it -15 ?
+renice -20 "$pid"
 
-# wait while pid is running
+# Wait while pid is running
 # method 1, while-do loop
 
 #while :
@@ -89,11 +90,11 @@ renice 0 "$pid"
 
 time tail --pid="$pid" -f /dev/null
 
-#reset the resolution
+# Finally, reset the resolution to default
 wm size reset
 
 #echo "   ."
-# set perf mode to average
+# set perf mode to average, device dependent scripts
 #. 2msm8916_avg.sh
 
 echo "program complete"
