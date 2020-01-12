@@ -8,8 +8,8 @@ Setup & Usage
 	Put the script in location of your choice, launch it with root privileges to launch FoF instead of launcher icon.
 	The device resolution can be adjusted in the script, find which suits you by trial & error.
 
-	First the device resolution is altered,then designated app is launched, script waits while the launched app process is running,
-	and restores device resolution to default when app process dies.
+	First the device resolution is altered,then designated app is launched, script waits while the launched app process 
+	is running and restores device resolution to default when app process dies.
 
 Warning :
 	Using this script can potentially put your Android device in a locked state, when this script is in use and device 
